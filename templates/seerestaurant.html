@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Restaurant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .restaurant-info {
+            font-family: 'Poppins', sans-serif; /* Custom font */
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif; /* Custom font */
+            text-align: center;
+            color: #007bff;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-family: 'Montserrat', sans-serif; /* Custom font */
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            font-family: 'Poppins', sans-serif; /* Custom font */
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif; /* Custom font */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .reviews {
+            margin-top: 20px;
+        }
+
+        .review {
+            font-family: 'Poppins', sans-serif; /* Custom font */
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="restaurant-info">
+        <h2>See Restaurant</h2>
+        <p>{{ rest.Name }}</p>
+        <p>{{ rest.Location }}</p>
+        <img src="{{ rest.image.url }}" alt="{{ rest.Name }}">
+        <p>{{ rest.Description }}</p>
+        <p>Rating: {{ rest.rating }}</p>
+        <p>6 seats available: {{ av_six }}/{{ rest.Max_NoOfSixTables }}</p>
+        <p>4 seats available: {{ av_four }}/{{ rest.Max_NoOfFourTables }}</p>
+        <p>2 seats available: {{ av_two }}/{{ rest.Max_NoOfTwoTables }}</p>
+        <form action="{% url 'book' %}" method="post">
+            {% csrf_token %}
+            <label for="six_tables">Enter 6 tables:</label>
+            <input type="number" max="{{ av_six }}" name="six_tables" id="six_tables" required>
+            <br>
+            <label for="four_tables">Enter 4 tables:</label>
+            <input type="number" max="{{ av_four }}" name="four_tables" id="four_tables" required>
+            <br>
+            <label for="two_tables">Enter 2 tables:</label>
+            <input type="number" max="{{ av_two }}" name="two_tables" id="two_tables" required>
+            <br>
+            <label for="special_request">Special request:</label>
+            <input type="text" name="special_request" id="special_request" required>
+            <br>
+            <input type="submit" value="Book">
+        </form>
+    </div>
+
+    <div class="reviews">
+        <h3>Reviews:</h3>
+        {% for r in reviews %}
+            <div class="review">
+                <p>{{ r.User }} - Rating: {{ r.Rating }}</p>
+                <p>{{ r.Comment }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

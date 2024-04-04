@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        div.booking {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+
+        div.booking p {
+            margin: 5px 0;
+        }
+
+        button.cancel-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        button.cancel-button:hover {
+            background-color: #c82333;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cancel Booking</h1>
+    <form action="{% url 'cancelbooking' %}" method="post">
+        {% csrf_token %}
+        {% for b in bookings %}
+            <div class="booking">
+                <p><strong>{{ b.Restaurant.Name }}</strong> - {{ b.StartTime }} to {{ b.EndTime }}</p>
+                <p>Number of 6-seater tables: {{ b.NoOfSixTables }}</p>
+                <p>Number of 4-seater tables: {{ b.NoOfFourTables }}</p>
+                <p>Number of 2-seater tables: {{ b.NoOfTwoTables }}</p>
+                <p>Booking Date: {{ b.BookingDate }}</p>
+                <button class="cancel-button" type="submit" name="booking_id" value="{{ b.id }}">Cancel</button>
+                <a href="{% url 'home' %}">Go back to Home</a>
+            </div>
+        {% endfor %}
+    </form>
+</body>
+</html>

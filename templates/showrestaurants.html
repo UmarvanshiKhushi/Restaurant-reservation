@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants</title>
+
+    <!-- CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .restaurant-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-right: 10px; /* Add margin between restaurants */
+            margin-bottom: 10px;
+            display: inline-block; /* Display restaurants inline */
+            width: calc(33.33% - 20px); /* Calculate width for three columns with margin */
+            box-sizing: border-box; /* Include padding and border in width calculation */
+        }
+
+        .restaurant-image {
+            width: 100%; /* Ensure image fills container width */
+            height: 300px; /* Maintain aspect ratio */
+            margin-bottom: 10px; /* Add margin below image */
+        }
+
+        .restaurant-details {
+            text-align: center; /* Center text */
+        }
+
+        .btn-book, .btn-rate {
+            background-color: #007bff; /* Blue background color */
+            color: #fff; /* White text color */
+            border: none; /* Remove border */
+            padding: 8px 16px; /* Padding */
+            margin-top: 10px; /* Margin top */
+            border-radius: 4px; /* Rounded corners */
+            text-decoration: none; /* Remove default link underline */
+            display: inline-block; /* Make sure buttons appear on the same line */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+
+        .btn-book:hover, .btn-rate:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Restaurants</h2>
+    <form action="{% url 'getdate' %}" method="post">
+        {% csrf_token %}
+        {% for r in restaurants %}
+            <div class="restaurant-container">
+                <img src="{{r.image.url}}" alt="{{r.Name}}" class="restaurant-image">
+                <div class="restaurant-details">
+                    <p>{{r.Name}} - {{r.Location}}</p>
+
+                    <button type="submit" name="restaurant_id" value="{{r.id}}" class="btn-book">Book</button>
+                    <a href="{% url 'rate' %}?rest_id={{r.id}}" class="btn-rate">Rate</a>
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+    <a href="{% url 'home' %}">Go back to Home</a>
+</body>
+</html>
